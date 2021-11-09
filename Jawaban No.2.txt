@@ -1,0 +1,13 @@
+select b.name as brand_name, o.name as outlet_name, o.address, o.longitude, o.latitude, COUNT(p.id) AS total_product, (
+      6371 * acos (
+      cos ( radians(-6.175392) )
+      * cos( radians( o.latitude ) )
+      * cos( radians( o.longitude ) - radians(106.827153) )
+      + sin ( radians(-6.175392) )
+      * sin( radians( o.latitude ) )
+    )
+    ) AS distance  from brand b 
+      join outlet o on b.id=o.brand_id
+      join product p on b.id=p.brand_id
+      group by o.id
+      order by distance;
